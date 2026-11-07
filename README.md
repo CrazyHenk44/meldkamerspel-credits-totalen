@@ -4,7 +4,7 @@ Een onofficieel userscript voor **meldkamerspel.com** dat boven de meldingenlijs
 
 ## Voorbeeld
 
-![Meldkamerspel Credits Totalen](docs/voorbeeld.png)
+![Meldkamerspel Credits Totalen](docs/voorbeeld.jpg)
 
 ## Wat toont het?
 
