@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Meldkamerspel Credits Totalen
 // @namespace    meldkamerspel-credit-totalen
-// @version      2.1.2
-// @description  Live credit-totalen voor eigen, team- en eventinzetten, deelname en zichtbare meldingen.
+// @version      2.2.0
+// @description  Live credit-totalen plus blauwe markering voor inzetten waar je zelf aan deelneemt.
 // @author       Meldkamerspel Credits Totalen contributors
 // @license      MIT
 // @match        https://www.meldkamerspel.com/*
@@ -503,6 +503,30 @@
                 margin: 6px 0 8px 0;
             }
 
+            .missionSideBarEntry.mks-participating-active {
+                border-left: 6px solid #2196F3 !important;
+                background-color: rgba(33, 150, 243, 0.12) !important;
+                position: relative;
+                transition: background-color 0.2s ease, border-color 0.2s ease;
+            }
+
+            .missionSideBarEntry.mks-participating-active:hover {
+                background-color: rgba(33, 150, 243, 0.18) !important;
+            }
+
+            .missionSideBarEntry.mks-participating-active::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 0 12px 12px 0;
+                border-color: transparent #2196F3 transparent transparent;
+                pointer-events: none;
+            }
+
             #${PANEL_ID} .mks-credit-grid {
                 display: grid;
                 grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -633,8 +657,28 @@
         );
     }
 
+    function updateParticipationMarkers() {
+        const entries = document.querySelectorAll(
+            '.missionSideBarEntry[mission_id], ' +
+            '[mission_id].mission_visibility'
+        );
+
+        entries.forEach(entry => {
+            const active =
+                !entry.classList.contains('mission_deleted') &&
+                !entry.classList.contains('deleted') &&
+                isParticipating(entry);
+
+            entry.classList.toggle(
+                'mks-participating-active',
+                active
+            );
+        });
+    }
+
     function updatePanel() {
         createPanel();
+        updateParticipationMarkers();
 
         const totals = calculateTotals();
 
