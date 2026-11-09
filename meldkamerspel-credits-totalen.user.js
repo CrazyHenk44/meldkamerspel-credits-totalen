@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         Meldkamerspel Credits Totalen
 // @namespace    meldkamerspel-credit-totalen
-// @version      2.1.1
+// @version      2.1.2
 // @description  Live credit-totalen voor eigen, team- en eventinzetten, deelname en zichtbare meldingen.
 // @author       Meldkamerspel Credits Totalen contributors
 // @license      MIT
 // @match        https://www.meldkamerspel.com/*
+// @match        https://meldkamerspel.com/*
 // @match        https://politie.meldkamerspel.com/*
 // @grant        none
 // @run-at       document-idle
