@@ -1,6 +1,6 @@
 # Meldkamerspel Credits Totalen
 
-Een onofficieel userscript voor **meldkamerspel.com** dat boven de meldingenlijst live credit-totalen toont.
+Een onofficieel userscript voor **meldkamerspel.com** dat boven de meldingenlijst live credit-totalen toont en inzetten waar je zelf aan deelneemt blauw markeert.
 
 ## Voorbeeld
 
@@ -17,6 +17,7 @@ Het dashboard toont:
 - 👤 Team deelname
 - 🎉 Event deelname
 - 👁 Zichtbaar — totaal van de meldingen die na je huidige filters daadwerkelijk zichtbaar zijn
+- 🔵 Blauwe markering — inzetten waar je zelf al aan deelneemt krijgen een blauwe linkerband en subtiele blauwe achtergrond
 
 De bedragen zijn gebaseerd op de gemiddelde credits van de inzet en zijn dus een indicatie, geen gegarandeerde uiteindelijke uitbetaling.
 
