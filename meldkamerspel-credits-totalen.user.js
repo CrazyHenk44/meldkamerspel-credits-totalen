@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Meldkamerspel Credits Totalen
 // @namespace    meldkamerspel-credit-totalen
-// @version      2.1.0
+// @version      2.1.1
 // @description  Live credit-totalen voor eigen, team- en eventinzetten, deelname en zichtbare meldingen.
 // @author       Meldkamerspel Credits Totalen contributors
 // @license      MIT
@@ -313,6 +313,17 @@
         const seen = new Set();
 
         return candidates.filter(entry => {
+            // Geplande inzetten hebben hun eigen teller in Meldkamerspel
+            // en worden daarom bewust niet in dit dashboard meegeteld.
+            if (
+                entry.closest(
+                    '#mission_list_sicherheitswache, ' +
+                    '#mission_list_sicherheitswache_alliance'
+                )
+            ) {
+                return false;
+            }
+
             const id =
                 entry.getAttribute('mission_id') ||
                 entry.dataset.missionId;
@@ -407,9 +418,9 @@
         return totals;
     }
 
-    function createTile(icon, label, valueId, countId) {
+    function createTile(icon, label, valueId, countId, extraClass = '') {
         return `
-            <div class="mks-credit-item">
+            <div class="mks-credit-item ${extraClass}">
                 <span class="mks-credit-label">${icon} ${label}</span>
                 <strong id="${valueId}">–</strong>
                 <small id="${countId}"></small>
@@ -448,7 +459,8 @@
                     '🎉',
                     'Event open',
                     'mks-event-open',
-                    'mks-event-open-count'
+                    'mks-event-open-count',
+                    'mks-event-tile'
                 )}
 
                 ${createTile(
@@ -469,7 +481,8 @@
                     '🎉',
                     'Event deelname',
                     'mks-event-participating',
-                    'mks-event-participating-count'
+                    'mks-event-participating-count',
+                    'mks-event-tile'
                 )}
 
                 <div class="mks-credit-summary">
@@ -493,6 +506,18 @@
                 display: grid;
                 grid-template-columns: repeat(3, minmax(0, 1fr));
                 gap: 6px;
+            }
+
+            #${PANEL_ID} .mks-credit-grid.mks-no-event {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            #${PANEL_ID} .mks-event-tile {
+                display: block;
+            }
+
+            #${PANEL_ID} .mks-credit-grid.mks-no-event .mks-event-tile {
+                display: none;
             }
 
             #${PANEL_ID} .mks-credit-item {
@@ -611,6 +636,17 @@
         createPanel();
 
         const totals = calculateTotals();
+
+        const grid = document.querySelector(
+            `#${PANEL_ID} .mks-credit-grid`
+        );
+
+        if (grid) {
+            grid.classList.toggle(
+                'mks-no-event',
+                totals.eventOpenCount === 0
+            );
+        }
 
         setCreditTile(
             'mks-own-open',
